@@ -21,7 +21,9 @@ jobs:
           node-version: 22
       - name: Unpack and set up the kit
         run: |
-          unzip -q -o project.zip
+          ZIP="$(ls project-v*.zip | sort -V | tail -1)"
+          echo "Using $ZIP"
+          unzip -q -o "$ZIP"
           bash kit/tools/setup.sh "$PWD/proj"
           rm -rf proj/node_modules
           cp ice/web/story.js ice/web/main.js ice/web/roman.js proj/web/
