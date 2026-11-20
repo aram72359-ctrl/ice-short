@@ -26,7 +26,7 @@ jobs:
           unzip -q -o "$ZIP"
           bash kit/tools/setup.sh "$PWD/proj"
           rm -rf proj/node_modules
-          cp ice/web/story.js ice/web/main.js ice/web/roman.js proj/web/
+          cp ice/web/*.js proj/web/
           cat proj/web/toonbase.js proj/web/roman.js > proj/web/toon.js
           cp ice/mix_raw.wav kit/tools/finish.sh proj/
           ls -la proj/web proj/web/lib
@@ -38,7 +38,7 @@ jobs:
       - id: m
         run: |
           if [ "${{ inputs.mode }}" = "full" ]; then
-            M=$(python3 -c "import json;print(json.dumps({'include':[{'name':'c%02d'%i,'spec':'%d-%d'%(i*196,min(i*196+195,2341))} for i in range(12)]}))")
+            M=$(python3 -c "import json;print(json.dumps({'include':[{'name':'c%02d'%i,'spec':'%d-%d'%(i*184,min(i*184+183,2203))} for i in range(12)]}))")
           else
             M='{"include":[{"name":"stills","spec":"60,330,500,600,740,900,1090,1200,1400,1650,1850,2200"}]}'
           fi
@@ -101,6 +101,6 @@ jobs:
         working-directory: proj
         run: |
           mkdir -p out
-          test "$(ls frames | wc -l)" -ge 2342
+          test "$(ls frames | wc -l)" -ge 2204
           bash finish.sh "Ice That Sailed to India"
           gh release create "video-${{ github.run_number }}" out/*.mp4 out/qa_sheet.jpg --title "Video ${{ github.run_number }}" --notes "Finished short"
