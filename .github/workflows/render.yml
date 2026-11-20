@@ -22,7 +22,7 @@ jobs:
       - name: Unpack and set up the kit
         run: |
           unzip -q -o project.zip
-          bash kit/tools/setup.sh proj
+          bash kit/tools/setup.sh "$PWD/proj"
           rm -rf proj/node_modules
           cp ice/web/story.js ice/web/main.js ice/web/roman.js proj/web/
           cat proj/web/toonbase.js proj/web/roman.js > proj/web/toon.js
