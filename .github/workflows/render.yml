@@ -38,9 +38,9 @@ jobs:
       - id: m
         run: |
           if [ "${{ inputs.mode }}" = "full" ]; then
-            M=$(python3 -c "import json;print(json.dumps({'include':[{'name':'c%02d'%i,'spec':'%d-%d'%(i*184,min(i*184+183,2203))} for i in range(12)]}))")
+            M=$(python3 -c "import json;print(json.dumps({'include':[{'name':'c%02d'%i,'spec':'%d-%d'%(i*178,min(i*178+177,2132))} for i in range(12)]}))")
           else
-            M='{"include":[{"name":"stills","spec":"60,330,500,600,740,900,1090,1200,1400,1650,1850,2200"}]}'
+            M='{"include":[{"name":"stills","spec":"100,259,429,529,669,829,1019,1129,1329,1579,1779,2079"}]}'
           fi
           echo "matrix=$M" >> "$GITHUB_OUTPUT"
   render:
@@ -101,6 +101,6 @@ jobs:
         working-directory: proj
         run: |
           mkdir -p out
-          test "$(ls frames | wc -l)" -ge 2204
+          test "$(ls frames | wc -l)" -ge 2133
           bash finish.sh "Ice That Sailed to India"
           gh release create "video-${{ github.run_number }}" out/*.mp4 out/qa_sheet.jpg --title "Video ${{ github.run_number }}" --notes "Finished short"
