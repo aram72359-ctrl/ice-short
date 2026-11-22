@@ -40,7 +40,7 @@ jobs:
           if [ "${{ inputs.mode }}" = "full" ]; then
             M=$(python3 -c "import json;print(json.dumps({'include':[{'name':'c%02d'%i,'spec':'%d-%d'%(i*178,min(i*178+177,2132))} for i in range(12)]}))")
           else
-            M='{"include":[{"name":"stills","spec":"100,259,429,529,669,829,1019,1129,1329,1579,1779,2079"}]}'
+            M='{"include":[{"name":"stills","spec":"27,82,147,195,238,357,403,434,503,553,625,692,734,866,904,942,987,1025,1065,1217,1249,1285,1349,1404,1488,1534,1612,1654,1720,1804,1856,1958,1999"}]}'
           fi
           echo "matrix=$M" >> "$GITHUB_OUTPUT"
   render:
@@ -94,7 +94,7 @@ jobs:
         working-directory: proj
         run: |
           ls frames | wc -l
-          ffmpeg -v error -y -pattern_type glob -i 'frames/f*.jpg' -vf "scale=360:-1,tile=6x2" sheet.jpg
+          ffmpeg -v error -y -pattern_type glob -i 'frames/f*.jpg' -vf "scale=360:-1,tile=6x6" sheet.jpg
           gh release create "stills-${{ github.run_number }}" sheet.jpg frames/*.jpg --title "Stills ${{ github.run_number }}" --notes "One picture per shot"
       - name: Encode the video
         if: ${{ inputs.mode == 'full' }}
