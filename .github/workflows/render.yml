@@ -48,12 +48,33 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix: ${{ fromJSON(needs.prep.outputs.matrix) }}
     steps:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - uses: actions/download-artifact@v4
+      - id: dl1
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: proj
+          path: proj
+      - name: Wait and retry the download
+        if: ${{ steps.dl1.outcome == 'failure' }}
+        run: sleep 30
+      - id: dl2
+        if: ${{ steps.dl1.outcome == 'failure' }}
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: proj
+          path: proj
+      - name: Wait and retry the download again
+        if: ${{ steps.dl1.outcome == 'failure' && steps.dl2.outcome == 'failure' }}
+        run: sleep 60
+      - if: ${{ steps.dl1.outcome == 'failure' && steps.dl2.outcome == 'failure' }}
+        uses: actions/download-artifact@v4
         with:
           name: proj
           path: proj
